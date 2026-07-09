@@ -2,115 +2,65 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>Torneos Recreos 2026</title>
 
 <style>
+
 body{
-margin:0;
-background:#0f172a;
-font-family:Arial,Helvetica,sans-serif;
+background:#1f2937;
 color:white;
-}
-
-header{
-background:#15803d;
-padding:20px;
-text-align:center;
-font-size:30px;
-font-weight:bold;
-}
-
-nav{
-background:#1e293b;
-padding:15px;
-text-align:center;
-}
-
-nav button{
-background:#22c55e;
-color:white;
-border:none;
-padding:10px 18px;
-margin:5px;
-border-radius:10px;
-font-size:16px;
+font-family:Arial;
+margin:20px;
 }
 
 section{
-background:#1e293b;
-margin:15px;
+background:#263246;
 padding:20px;
 border-radius:15px;
+margin-bottom:20px;
 }
 
-input,select{
+input,select,button{
 width:100%;
 padding:10px;
-margin:8px 0;
-border:none;
+margin-top:8px;
+margin-bottom:15px;
 border-radius:8px;
-font-size:16px;
-}
-
-button.guardar{
-background:#16a34a;
-color:white;
 border:none;
-padding:12px;
-width:100%;
-border-radius:10px;
 font-size:18px;
 }
 
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:15px;
-}
-
-th,td{
-border:1px solid #555;
-padding:10px;
-text-align:center;
-}
-
-th{
+button{
 background:#16a34a;
+color:white;
+font-weight:bold;
+cursor:pointer;
 }
 
-.oculto{
-display:none;
+button:hover{
+background:#15803d;
 }
+
 </style>
-
 </head>
 
 <body>
 
-<header>
-🏆 Torneos Recreos 2026
-</header>
-
 <section>
 
-<h2>🔒 Administrador</h2>
+<h1>🏆 Torneos Recreos 2026</h1>
 
-<input type="password" id="pass" placeholder="Contraseña">
-
-<button class="guardar" onclick="login()">
-Entrar
-</button>
-
-<p id="estado"></p>
+<button onclick="admin()">🔒 Admin</button>
 
 </section>
 
-<section id="admin" class="oculto">
+<section id="panel" style="display:none;">
 
 <h2>⚽ Cargar Resultado</h2>
 
-<label>Equipo Local</label>
+<label>Local</label>
 
 <select id="local">
 <option>Bluleavens</option>
@@ -121,7 +71,7 @@ Entrar
 
 <input type="number" id="gLocal" value="0">
 
-<label>Equipo Visitante</label>
+<label>Visitante</label>
 
 <select id="visitante">
 <option>6B</option>
@@ -129,18 +79,19 @@ Entrar
 </select>
 
 <label>Goles</label>
-<label>⚽ Goleadores Blueavens</label>
-<input type="text" id="goleadoresBlueavens" placeholder="Ej: Fermín x2, Alejo">
 
-<label>⚽ Goleadores 6B</label>
-<input type="text" id="goleadores6B" placeholder="Ej: Nicolás, Lorenzo">
-    
-<input type="number" id="gVisitante" value="0"
-<label>⚽ Goleadores Blueavens</label>
-<input type="text" id="goleadoresBlueavens" placeholder="Ej: Fermín x2, Alejo">
+<input type="number" id="gVisitante" value="0">
 
-<label>⚽ Goleadores 6B</label>
-<input type="text" id="goleadores6B" placeholder="Ej: Nicolás, Juan Ignacio">
+<button onclick="guardarResultado()">
+Guardar Resultado
+</button>
+
+<button onclick="borrarResultado()">
+🗑️ Borrar Resultado
+</button>
+
+</section>
+
 <section>
 
 <h2>📋 Último Resultado</h2>
@@ -153,47 +104,43 @@ Todavía no hay resultados.
 
 <script>
 
-function login(){
+function admin(){
 
-if(document.getElementById("pass").value==="Gimnasia1"){
+let pass=prompt("Contraseña");
 
-document.getElementById("admin").classList.remove("oculto");
-
-document.getElementById("estado").innerHTML="✅ Administrador conectado";
-
+if(pass=="Gimnasia1"){
+document.getElementById("panel").style.display="block";
 }else{
-
 alert("Contraseña incorrecta");
-
 }
 
 }
 
 function guardarResultado(){
-let gb=document.getElementById("goleadoresBlueavens").value;
-
-let g6=document.getElementById("goleadores6B").value;
 
 let local=document.getElementById("local").value;
-
 let visitante=document.getElementById("visitante").value;
 
 let gl=document.getElementById("gLocal").value;
-
 let gv=document.getElementById("gVisitante").value;
-let gol1=document.getElementById("gol1").value;
-let gol2=document.getElementById("gol2").value;
-let gol3=document.getElementById("gol3").value;
-let texto =
-local+" "+gl+" - "+gv+" "+visitante+
-"<br><br><b>Goleadores:</b><br>"+
-gol1+"<br>"+gol2+"<br>"+gol3;
 
-document.getElementById("resultado").innerHTML=texto;
+let resultado=local+" "+gl+" - "+gv+" "+visitante;
 
-localStorage.setItem("resultado",texto);
+document.getElementById("resultado").innerHTML=resultado;
+
+localStorage.setItem("resultado",resultado);
 
 alert("Resultado guardado");
+
+}
+
+function borrarResultado(){
+
+localStorage.removeItem("resultado");
+
+document.getElementById("resultado").innerHTML="Todavía no hay resultados.";
+
+alert("Resultado borrado");
 
 }
 
@@ -202,9 +149,7 @@ window.onload=function(){
 let r=localStorage.getItem("resultado");
 
 if(r){
-
 document.getElementById("resultado").innerHTML=r;
-
 }
 
 }
@@ -212,4 +157,4 @@ document.getElementById("resultado").innerHTML=r;
 </script>
 
 </body>
-</html>=
+</html>#
