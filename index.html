@@ -131,8 +131,7 @@ Entrar
 <label>Goles</label>
 
 <input type="number" id="gVisitante" value="0">
-
-<button class="guardar" onclick="<label>⚽ Goleador 1</label>
+ onclick="<label>⚽ Goleador 1</label>
 <select id="gol1">
 <option>Fermín</option>
 <option>Alejo</option>
@@ -235,8 +234,13 @@ let visitante=document.getElementById("visitante").value;
 let gl=document.getElementById("gLocal").value;
 
 let gv=document.getElementById("gVisitante").value;
-
-let texto=local+" "+gl+" - "+gv+" "+visitante;
+let gol1=document.getElementById("gol1").value;
+let gol2=document.getElementById("gol2").value;
+let gol3=document.getElementById("gol3").value;
+let texto =
+local+" "+gl+" - "+gv+" "+visitante+
+"<br><br><b>Goleadores:</b><br>"+
+gol1+"<br>"+gol2+"<br>"+gol3;
 
 document.getElementById("resultado").innerHTML=texto;
 
