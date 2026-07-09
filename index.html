@@ -129,51 +129,18 @@ Entrar
 </select>
 
 <label>Goles</label>
+<label>⚽ Goleadores Blueavens</label>
+<input type="text" id="goleadoresBlueavens" placeholder="Ej: Fermín x2, Alejo">
 
+<label>⚽ Goleadores 6B</label>
+<input type="text" id="goleadores6B" placeholder="Ej: Nicolás, Lorenzo">
+    
 <input type="number" id="gVisitante" value="0"
-<label>⚽ Goleador 1</label>
-<select id="gol1">
-<option>Fermín</option>
-<option>Alejo</option>
-<option>Benicio</option>
-<option>Fabián</option>
-<option>Nicolás</option>
-<option>Atilio</option>
-<option>Juan Ignacio</option>
-<option>Lorenzo</option>
-<option>Ninguno</option>
-</select>
+<label>⚽ Goleadores Blueavens</label>
+<input type="text" id="goleadoresBlueavens" placeholder="Ej: Fermín x2, Alejo">
 
-<label>⚽ Goleador 2</label>
-<select id="gol2">
-<option>Ninguno</option>
-<option>Fermín</option>
-<option>Alejo</option>
-<option>Benicio</option>
-<option>Fabián</option>
-<option>Nicolás</option>
-<option>Atilio</option>
-<option>Juan Ignacio</option>
-<option>Lorenzo</option>
-</select>
-
-<label>⚽ Goleador 3</label>
-<select id="gol3">
-<option>Ninguno</option>
-<option>Fermín</option>
-<option>Alejo</option>
-<option>Benicio</option>
-<option>Fabián</option>
-<option>Nicolás</option>
-<option>Atilio</option>
-<option>Juan Ignacio</option>
-<option>Lorenzo</option>
-</select>
-Guardar Resultado
-</button>
-
-</section>
-
+<label>⚽ Goleadores 6B</label>
+<input type="text" id="goleadores6B" placeholder="Ej: Nicolás, Juan Ignacio">
 <section>
 
 <h2>📋 Último Resultado</h2>
@@ -203,6 +170,9 @@ alert("Contraseña incorrecta");
 }
 
 function guardarResultado(){
+let gb=document.getElementById("goleadoresBlueavens").value;
+
+let g6=document.getElementById("goleadores6B").value;
 
 let local=document.getElementById("local").value;
 
