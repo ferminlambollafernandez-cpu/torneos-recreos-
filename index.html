@@ -150,4 +150,78 @@ Todavía no hay resultados.
 
 <section>
 
-<h2>🥅 Goles por jugador</h2>
+<h2>🥅 Goles por jugador</<table>
+
+<tr>
+<th>Jugador</th>
+<th>Goles</th>
+</tr>
+
+<tr><td>Fermín</td><td id="Fermin">0</td></tr>
+<tr><td>Alejo</td><td id="Alejo">0</td></tr>
+<tr><td>Benicio</td><td id="Benicio">0</td></tr>
+<tr><td>Fabián</td><td id="Fabian">0</td></tr>
+
+<tr><td>Nicolás</td><td id="Nicolas">0</td></tr>
+<tr><td>Atilio</td><td id="Atilio">0</td></tr>
+<tr><td>Juan Ignacio</td><td id="JuanIgnacio">0</td></tr>
+<tr><td>Lorenzo</td><td id="Lorenzo">0</td></tr>
+
+</table>
+
+</section>
+
+<script>
+
+function login(){
+
+if(document.getElementById("pass").value==="Gimnasia1"){
+
+document.getElementById("admin").classList.remove("oculto");
+
+document.getElementById("estado").innerHTML="✅ Administrador conectado";
+
+}else{
+
+alert("Contraseña incorrecta");
+
+}
+
+}
+
+function guardarResultado(){
+
+let local=document.getElementById("local").value;
+
+let visitante=document.getElementById("visitante").value;
+
+let gl=document.getElementById("gLocal").value;
+
+let gv=document.getElementById("gVisitante").value;
+
+let texto=local+" "+gl+" - "+gv+" "+visitante;
+
+document.getElementById("resultado").innerHTML=texto;
+
+localStorage.setItem("resultado",texto);
+
+alert("Resultado guardado");
+
+}
+
+window.onload=function(){
+
+let r=localStorage.getItem("resultado");
+
+if(r){
+
+document.getElementById("resultado").innerHTML=r;
+
+}
+
+}
+
+</script>
+
+</body>
+</html>=
