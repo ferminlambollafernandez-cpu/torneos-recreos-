@@ -55,6 +55,17 @@ text-align:center;
 
 <h1>🏆 Torneos Recreos 2026</h1>
 
+function login() {
+  alert("El botón funciona");
+
+  const pass = prompt("Contraseña");
+
+  if (pass === "Gimnasia1") {
+    document.getElementById("admin").style.display = "block";
+  } else {
+    alert("Contraseña incorrecta");
+  }
+}
 <button onclick="login()">
 🔒 Entrar como administrador
 </button>
@@ -72,7 +83,7 @@ async function cargarResultado(){
     .select("*")
     .order("id",{ascending:false})
     .limit(1);
-
+  
   console.log(data);
   console.log(error);
 
