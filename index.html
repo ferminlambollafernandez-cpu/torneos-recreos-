@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Torneos Recreos 2026</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 
 body{
+font-family:Arial;
 background:#1f2937;
 color:white;
-font-family:Arial;
-margin:20px;
+padding:20px;
 }
 
 section{
-background:#263246;
+background:#2b3648;
 padding:20px;
 border-radius:15px;
 margin-bottom:20px;
@@ -25,25 +28,25 @@ margin-bottom:20px;
 input,select,button{
 width:100%;
 padding:10px;
-margin-top:8px;
-margin-bottom:15px;
-border-radius:8px;
-border:none;
+margin-top:10px;
+margin-bottom:10px;
 font-size:18px;
+border:none;
+border-radius:8px;
 }
 
 button{
 background:#16a34a;
 color:white;
 font-weight:bold;
-cursor:pointer;
 }
 
-button:hover{
-background:#15803d;
+h1,h2{
+text-align:center;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -52,33 +55,35 @@ background:#15803d;
 
 <h1>🏆 Torneos Recreos 2026</h1>
 
-<button onclick="admin()">🔒 Admin</button>
+<button onclick="login()">
+🔒 Entrar como administrador
+</button>
 
 </section>
 
-<section id="panel" style="display:none;">
+<section id="admin" style="display:none;">
 
-<h2>⚽ Cargar Resultado</h2>
+<h2>Cargar Resultado</h2>
 
-<label>Local</label>
+<label>Equipo Local</label>
 
 <select id="local">
 <option>Bluleavens</option>
 <option>6B</option>
 </select>
 
-<label>Goles</label>
+<label>Goles Local</label>
 
 <input type="number" id="gLocal" value="0">
 
-<label>Visitante</label>
+<label>Equipo Visitante</label>
 
 <select id="visitante">
 <option>6B</option>
 <option>Bluleavens</option>
 </select>
 
-<label>Goles</label>
+<label>Goles Visitante</label>
 
 <input type="number" id="gVisitante" value="0">
 
@@ -94,67 +99,101 @@ Guardar Resultado
 
 <section>
 
-<h2>📋 Último Resultado</h2>
+<h2>Último Resultado</h2>
 
-<h3 id="resultado">
-Todavía no hay resultados.
-</h3>
+<h1 id="resultado">
+Cargando...
+</h1>
 
-</section>
-
+    </section>
 <script>
 
-function admin(){
+const supabase = window.supabase.createClient(
+  "https://wboaghrdzbyqlbhcmqqr.supabase.co",
+  "sb_publishable_"
+);
 
-let pass=prompt("Contraseña");
+function login(){
 
-if(pass=="Gimnasia1"){
-document.getElementById("panel").style.display="block";
-}else{
-alert("Contraseña incorrecta");
-}
+  const pass = prompt("Contraseña");
 
-}
-
-function guardarResultado(){
-
-let local=document.getElementById("local").value;
-let visitante=document.getElementById("visitante").value;
-
-let gl=document.getElementById("gLocal").value;
-let gv=document.getElementById("gVisitante").value;
-
-let resultado=local+" "+gl+" - "+gv+" "+visitante;
-
-document.getElementById("resultado").innerHTML=resultado;
-
-localStorage.setItem("resultado",resultado);
-
-alert("Resultado guardado");
+  if(pass==="Gimnasia1"){
+    document.getElementById("admin").style.display="block";
+  }else{
+    alert("Contraseña incorrecta");
+  }
 
 }
 
-function borrarResultado(){
+async function guardarResultado(){
 
-localStorage.removeItem("resultado");
+  const local = document.getElementById("local").value;
+  const visitante = document.getElementById("visitante").value;
+  const goles_local = Number(document.getElementById("gLocal").value);
+  const goles_visitante = Number(document.getElementById("gVisitante").value);
 
-document.getElementById("resultado").innerHTML="Todavía no hay resultados.";
+  const { error } = await supabase
+    .from("resultados")
+    .insert([{
+      local,
+      goles_local,
+      visitante,
+      goles_visitante
+    }]);
 
-alert("Resultado borrado");
+  if(error){
+    alert("Error: " + error.message);
+    return;
+  }
+
+  alert("Resultado guardado");
+
+  cargarResultado();
 
 }
 
-window.onload=function(){
+async function cargarResultado(){
 
-let r=localStorage.getItem("resultado");
+  const { data, error } = await supabase
+    .from("resultados")
+    .select("*")
+    .order("id",{ascending:false})
+    .limit(1);
 
-if(r){
-document.getElementById("resultado").innerHTML=r;
+  if(error || !data.length){
+    document.getElementById("resultado").innerHTML="Todavía no hay resultados.";
+    return;
+  }
+
+  const r = data[0];
+
+  document.getElementById("resultado").innerHTML =
+    `${r.local} ${r.goles_local} - ${r.goles_visitante} ${r.visitante}`;
+
 }
 
+async function borrarResultado(){
+
+  const { data } = await supabase
+    .from("resultados")
+    .select("id")
+    .order("id",{ascending:false})
+    .limit(1);
+
+  if(!data.length) return;
+
+  await supabase
+    .from("resultados")
+    .delete()
+    .eq("id",data[0].id);
+
+  cargarResultado();
+
 }
+
+cargarResultado();
 
 </script>
 
 </body>
-</html>#
+</html>
