@@ -65,47 +65,34 @@ text-align:center;
 
 <h2>Cargar Resultado</h2>
 
-<label>Equipo Local</label>
+async function cargarResultado(){
 
-<select id="local">
-<option>Bluleavens</option>
-<option>6B</option>
-</select>
+  const { data, error } = await supabase
+    .from("resultados")
+    .select("*")
+    .order("id",{ascending:false})
+    .limit(1);
 
-<label>Goles Local</label>
+  console.log(data);
+  console.log(error);
 
-<input type="number" id="gLocal" value="0">
+  if(error){
+    alert(error.message);
+    document.getElementById("resultado").innerHTML = error.message;
+    return;
+  }
 
-<label>Equipo Visitante</label>
+  if(data.length===0){
+    document.getElementById("resultado").innerHTML="No hay resultados";
+    return;
+  }
 
-<select id="visitante">
-<option>6B</option>
-<option>Bluleavens</option>
-</select>
+  const r=data[0];
 
-<label>Goles Visitante</label>
+  document.getElementById("resultado").innerHTML =
+  `${r.local} ${r.goles_local} - ${r.goles_visitante} ${r.visitante}`;
 
-<input type="number" id="gVisitante" value="0">
-
-<button onclick="guardarResultado()">
-Guardar Resultado
-</button>
-
-<button onclick="borrarResultado()">
-🗑️ Borrar Resultado
-</button>
-
-</section>
-
-<section>
-
-<h2>Último Resultado</h2>
-
-<h1 id="resultado">
-Cargando...
-</h1>
-
-    </section>
+}
 <script>
 
 const supabase = window.supabase.createClient(
